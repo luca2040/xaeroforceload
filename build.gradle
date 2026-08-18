@@ -28,7 +28,17 @@ sourceSets.main.resources {
 }
 
 repositories {
-    // Add here additional repositories if required by some of the dependencies below.
+    maven {
+        name = "Xaero's Maven"
+        url = "https://chocolateminecraft.com/maven"
+    }
+
+    maven {
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -127,6 +137,19 @@ dependencies {
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
+
+    // Xaero's Minimap
+    // Compile against Xaero's actual classes, but DO NOT bundle it.
+    compileOnly "xaero.minimap:xaerominimap-neoforge-1.21.1:25.3.13"
+    // Put Minimap in the dev/test client.
+    localRuntime "xaero.minimap:xaerominimap-neoforge-1.21.1:25.3.13"
+    // Xaero's World Map
+    // Compile against its actual classes, but DO NOT bundle it.
+    compileOnly "xaero.map:xaeroworldmap-neoforge-1.21.1:1.40.16"
+    // Put World Map in the dev/test client.
+    localRuntime "xaero.map:xaeroworldmap-neoforge-1.21.1:1.40.16"
+    // Shared Xaero library/API
+    compileOnly "xaero.lib:xaerolib-neoforge-1.21:1.0.42"
 
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
