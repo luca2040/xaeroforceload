@@ -140,16 +140,16 @@ dependencies {
 
     // Xaero's Minimap
     // Compile against Xaero's actual classes, but DO NOT bundle it.
-    compileOnly "xaero.minimap:xaerominimap-neoforge-1.21.1:25.3.13"
+    compileOnly "xaero.minimap:xaerominimap-neoforge-1.21.1:26.4.2"
     // Put Minimap in the dev/test client.
-    localRuntime "xaero.minimap:xaerominimap-neoforge-1.21.1:25.3.13"
-    // Xaero's World Map
-    // Compile against its actual classes, but DO NOT bundle it.
-    compileOnly "xaero.map:xaeroworldmap-neoforge-1.21.1:1.40.16"
-    // Put World Map in the dev/test client.
-    localRuntime "xaero.map:xaeroworldmap-neoforge-1.21.1:1.40.16"
-    // Shared Xaero library/API
-    compileOnly "xaero.lib:xaerolib-neoforge-1.21:1.0.42"
+    localRuntime "xaero.minimap:xaerominimap-neoforge-1.21.1:26.4.2"
+    // // Xaero's World Map
+    // // Compile against its actual classes, but DO NOT bundle it.
+    compileOnly "xaero.map:xaeroworldmap-neoforge-1.21.1:1.44.2"
+    // // Put World Map in the dev/test client.
+    localRuntime "xaero.map:xaeroworldmap-neoforge-1.21.1:1.44.2"
+    // // Shared Xaero library/API
+    compileOnly "xaero.lib:xaerolib-neoforge-1.21.1:1.7.1"
 
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
