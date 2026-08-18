@@ -1,0 +1,13 @@
+{
+  "itemGroup.xaeroforceload": "Example Mod Tab",
+  "block.xaeroforceload.example_block": "Example Block",
+  "item.xaeroforceload.example_item": "Example Item",
+
+  "xaeroforceload.configuration.title": "Xaero Forceload Configs",
+  "xaeroforceload.configuration.section.xaeroforceload.common.toml": "Xaero Forceload Configs",
+  "xaeroforceload.configuration.section.xaeroforceload.common.toml.title": "Xaero Forceload Configs",
+  "xaeroforceload.configuration.items": "Item List",
+  "xaeroforceload.configuration.logDirtBlock": "Log Dirt Block",
+  "xaeroforceload.configuration.magicNumberIntroduction": "Magic Number Text",
+  "xaeroforceload.configuration.magicNumber": "Magic Number"
+}
