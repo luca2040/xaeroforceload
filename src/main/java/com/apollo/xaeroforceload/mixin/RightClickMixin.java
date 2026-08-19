@@ -24,28 +24,21 @@ public class RightClickMixin {
                     target = "Lxaero/map/gui/IRightClickableElement;getRightClickOptions()Ljava/util/ArrayList;"
             )
     )
-
     private static ArrayList<RightClickOption> xaeroforceload$inspectOptions(
             IRightClickableElement target
     ) {
         ArrayList<RightClickOption> options = target.getRightClickOptions();
+        GuiMapFields mapFields = (GuiMapFields) target;
 
-        LOGGER.info("Xaero right-click target: {}", target.getClass().getName());
-        LOGGER.info("Xaero right-click options: {}", options.size());
+        int blockPosX = mapFields.xaeroforceload$getRightClickX();
+        int blockPosZ = mapFields.xaeroforceload$getRightClickZ();
+        int chunkCoordX = blockPosX >> 4;
+        int chunkCoordZ = blockPosZ >> 4;
+        LOGGER.info("block pos: {} {}", blockPosX, blockPosZ);
+        LOGGER.info("chunk pos: {} {}", chunkCoordX, chunkCoordZ);
 
         RightClickOption forceLoadOption = new ForceClickOption(options.size(), target);
         options.add(forceLoadOption);
-
-        for (int i = 0; i < options.size(); i++) {
-            RightClickOption option = options.get(i);
-
-            LOGGER.info(
-                    "  [{}] {} | active={}",
-                    i,
-                    option.getDisplayName(),
-                    option.isActive()
-            );
-        }
 
         return options;
     }

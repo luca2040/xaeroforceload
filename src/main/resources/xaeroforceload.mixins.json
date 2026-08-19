@@ -4,6 +4,7 @@
   "package": "com.apollo.xaeroforceload.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "RightClickMixin"
+    "RightClickMixin",
+    "GuiMapFields"
   ]
 }
