@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public record ForceChunkData(
-        ResourceKey<Level> dim, int chunkx, int chunkz, boolean loaded)
+        ResourceKey<Level> dim, int left, int top, int right, int bottom, boolean loaded)
         implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<ForceChunkData> TYPE =
@@ -22,8 +22,10 @@ public record ForceChunkData(
     public static final StreamCodec<ByteBuf, ForceChunkData> STREAM_CODEC =
             StreamCodec.composite(
                     ResourceKey.streamCodec(Registries.DIMENSION), ForceChunkData::dim,
-                    ByteBufCodecs.VAR_INT, ForceChunkData::chunkx,
-                    ByteBufCodecs.VAR_INT, ForceChunkData::chunkz,
+                    ByteBufCodecs.VAR_INT, ForceChunkData::left,
+                    ByteBufCodecs.VAR_INT, ForceChunkData::top,
+                    ByteBufCodecs.VAR_INT, ForceChunkData::right,
+                    ByteBufCodecs.VAR_INT, ForceChunkData::bottom,
                     ByteBufCodecs.BOOL, ForceChunkData::loaded,
                     ForceChunkData::new
             );

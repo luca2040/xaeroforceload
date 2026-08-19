@@ -12,24 +12,34 @@ import xaero.map.gui.IRightClickableElement;
 
 public class ForceClickOption extends RightClickOption {
     private final ResourceKey<Level> dimension;
-    private final int chunkCoordX;
-    private final int chunkCoordZ;
+    private final int left;
+    private final int top;
+    private final int right;
+    private final int bottom;
     private final boolean loaded;
+
+    private static boolean isOneChunk(int left, int top, int right, int bottom) {
+        return left == right && top == bottom;
+    }
 
     public ForceClickOption(
             int index, IRightClickableElement target,
             ResourceKey<Level> dimension,
-            int chunkCoordX, int chunkCoordZ,
+            int left, int top,
+            int right, int bottom,
             boolean loaded) {
         super(
-                loaded ? "xaeroforceload.mapmenu.load" : "xaeroforceload.mapmenu.unload",
+                (loaded ? "xaeroforceload.mapmenu.load" : "xaeroforceload.mapmenu.unload") +
+                        (isOneChunk(left, top, right, bottom) ? "" : ".multiple"),
                 Style.EMPTY.withItalic(true).withColor(
                         loaded ? ChatFormatting.AQUA : ChatFormatting.GOLD),
                 index, target);
 
         this.dimension = dimension;
-        this.chunkCoordX = chunkCoordX;
-        this.chunkCoordZ = chunkCoordZ;
+        this.left = left;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
         this.loaded = loaded;
     }
 
@@ -38,8 +48,10 @@ public class ForceClickOption extends RightClickOption {
         PacketDistributor.sendToServer(
                 new ForceChunkData(
                         this.dimension,
-                        this.chunkCoordX,
-                        this.chunkCoordZ,
+                        this.left,
+                        this.top,
+                        this.right,
+                        this.bottom,
                         this.loaded
                 ));
     }

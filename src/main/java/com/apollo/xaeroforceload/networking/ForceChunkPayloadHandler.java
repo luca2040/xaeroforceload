@@ -11,8 +11,10 @@ public class ForceChunkPayloadHandler {
     public static void handleDataOnMain(
             final ForceChunkData data, final IPayloadContext context) {
         ResourceKey<Level> dim = data.dim();
-        int chunkx = data.chunkx();
-        int chunkz = data.chunkz();
+        int left = data.left();
+        int top = data.top();
+        int right = data.right();
+        int bottom = data.bottom();
         boolean loaded = data.loaded();
 
         MinecraftServer server = context.player().getServer();
@@ -27,7 +29,12 @@ public class ForceChunkPayloadHandler {
             return;
         }
 
-        boolean hasLoaded = level.setChunkForced(chunkx, chunkz, loaded);
-        XaeroForceload.LOGGER.info("chunk {} {} requested {} is {}", chunkx, chunkz, loaded, hasLoaded);
+        for (int i = left; i <= right; i++) {
+            for (int j = top; j <= bottom; j++) {
+                boolean hasLoaded = level.setChunkForced(i, j, loaded);
+                XaeroForceload.LOGGER.info(
+                        "chunk {} {} requested {} changed: {}", i, j, loaded, hasLoaded);
+            }
+        }
     }
 }

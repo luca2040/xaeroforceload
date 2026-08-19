@@ -1,4 +1,6 @@
 {
   "xaeroforceload.mapmenu.load": "Force load chunk",
-  "xaeroforceload.mapmenu.unload": "Disable forced loading"
+  "xaeroforceload.mapmenu.unload": "Disable forced loading",
+  "xaeroforceload.mapmenu.load.multiple": "Force load chunks",
+  "xaeroforceload.mapmenu.unload.multiple": "Disable forced loading"
 }

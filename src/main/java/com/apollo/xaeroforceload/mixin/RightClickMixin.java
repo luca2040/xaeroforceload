@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import xaero.map.gui.IRightClickableElement;
+import xaero.map.gui.MapTileSelection;
 import xaero.map.gui.dropdown.rightclick.GuiRightClickMenu;
 import xaero.map.gui.dropdown.rightclick.RightClickOption;
 
@@ -29,16 +30,14 @@ public class RightClickMixin {
         GuiMapFields mapFields = (GuiMapFields) target;
 
         ResourceKey<Level> dimension = mapFields.xaeroforceload$getRightClickDim();
-        int blockPosX = mapFields.xaeroforceload$getRightClickX();
-        int blockPosZ = mapFields.xaeroforceload$getRightClickZ();
-        int chunkCoordX = blockPosX >> 4;
-        int chunkCoordZ = blockPosZ >> 4;
+        MapTileSelection tiles = mapFields.xaeroforceload$mapTileSelection();
 
         RightClickOption forceLoadOption =
                 new ForceClickOption(
                         options.size(), target,
                         dimension,
-                        chunkCoordX, chunkCoordZ,
+                        tiles.getLeft(), tiles.getTop(),
+                        tiles.getRight(), tiles.getBottom(),
                         true);
 
         options.add(forceLoadOption);
