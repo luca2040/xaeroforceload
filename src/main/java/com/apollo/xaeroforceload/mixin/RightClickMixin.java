@@ -3,8 +3,8 @@ package com.apollo.xaeroforceload.mixin;
 import java.util.ArrayList;
 
 import com.apollo.xaeroforceload.mixindata.ForceClickOption;
-import com.mojang.logging.LogUtils;
-import org.slf4j.Logger;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -15,8 +15,6 @@ import xaero.map.gui.dropdown.rightclick.RightClickOption;
 
 @Mixin(GuiRightClickMenu.class)
 public class RightClickMixin {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     @Redirect(
             method = "getMenu",
             at = @At(
@@ -30,14 +28,19 @@ public class RightClickMixin {
         ArrayList<RightClickOption> options = target.getRightClickOptions();
         GuiMapFields mapFields = (GuiMapFields) target;
 
+        ResourceKey<Level> dimension = mapFields.xaeroforceload$getRightClickDim();
         int blockPosX = mapFields.xaeroforceload$getRightClickX();
         int blockPosZ = mapFields.xaeroforceload$getRightClickZ();
         int chunkCoordX = blockPosX >> 4;
         int chunkCoordZ = blockPosZ >> 4;
-        LOGGER.info("block pos: {} {}", blockPosX, blockPosZ);
-        LOGGER.info("chunk pos: {} {}", chunkCoordX, chunkCoordZ);
 
-        RightClickOption forceLoadOption = new ForceClickOption(options.size(), target);
+        RightClickOption forceLoadOption =
+                new ForceClickOption(
+                        options.size(), target,
+                        dimension,
+                        chunkCoordX, chunkCoordZ,
+                        true);
+
         options.add(forceLoadOption);
 
         return options;
