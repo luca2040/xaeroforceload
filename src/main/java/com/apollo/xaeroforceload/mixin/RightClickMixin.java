@@ -34,15 +34,15 @@ public class RightClickMixin {
 
         ResourceKey<Level> dimension = mapFields.xaeroforceload$getRightClickDim();
         MapTileSelection tiles = mapFields.xaeroforceload$mapTileSelection();
-
-        long totalChunks = 0;
-        long addedChunks = 0;
         LongSet loadedChunks = ClientChunkState.get(dimension);
+
+        int totalChunks = 0;
+        int addedChunks = 0;
         for (int i = tiles.getLeft(); i <= tiles.getRight(); i++) {
             for (int j = tiles.getTop(); j <= tiles.getBottom(); j++) {
-                long longChunk = ChunkPos.asLong(i, j);
-                totalChunks += 1;
-                if (loadedChunks.contains(longChunk)) {
+                totalChunks++;
+
+                if (loadedChunks.contains(ChunkPos.asLong(i, j))) {
                     addedChunks++;
                 }
             }

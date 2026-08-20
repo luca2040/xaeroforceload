@@ -1,6 +1,7 @@
 package com.apollo.xaeroforceload.mixindata;
 
 import com.apollo.xaeroforceload.ClientChunkState;
+import com.apollo.xaeroforceload.XaeroForceloadConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -21,8 +22,8 @@ public class ForceloadHighlighter extends ChunkHighlighter {
         }
 
         // 0xBBGGRRAA
-        int fill = 0x0000FF33;
-        int border = 0x0000FF77;
+        int fill = XaeroForceloadConfig.getFillColor();
+        int border = XaeroForceloadConfig.getBorderColor();
 
         return new int[]{
                 fill, // center
