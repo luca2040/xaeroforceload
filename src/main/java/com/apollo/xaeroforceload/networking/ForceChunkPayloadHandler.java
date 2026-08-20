@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ForceChunkPayloadHandler {
@@ -25,16 +26,20 @@ public class ForceChunkPayloadHandler {
 
         ServerLevel level = server.getLevel(dim);
         if (level == null) {
-            XaeroForceload.LOGGER.error("level is null");
+            XaeroForceload.LOGGER.error("dim is null");
             return;
         }
 
         for (int i = left; i <= right; i++) {
             for (int j = top; j <= bottom; j++) {
-                boolean hasLoaded = level.setChunkForced(i, j, loaded);
-                XaeroForceload.LOGGER.info(
-                        "chunk {} {} requested {} changed: {}", i, j, loaded, hasLoaded);
+                level.setChunkForced(i, j, loaded);
             }
         }
+
+        PacketDistributor.sendToAllPlayers(
+                new SyncClientData(
+                        level.dimension(),
+                        level.getForcedChunks()
+                ));
     }
 }

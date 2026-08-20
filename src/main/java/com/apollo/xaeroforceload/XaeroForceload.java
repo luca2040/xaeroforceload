@@ -2,6 +2,8 @@ package com.apollo.xaeroforceload;
 
 import com.apollo.xaeroforceload.networking.ForceChunkData;
 import com.apollo.xaeroforceload.networking.ForceChunkPayloadHandler;
+import com.apollo.xaeroforceload.networking.SyncClientData;
+import com.apollo.xaeroforceload.networking.SyncClientPayloadHandler;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.slf4j.Logger;
@@ -23,10 +25,16 @@ public class XaeroForceload {
 
     public static void register(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
+
         registrar.playToServer(
                 ForceChunkData.TYPE,
                 ForceChunkData.STREAM_CODEC,
                 ForceChunkPayloadHandler::handleDataOnMain
+        );
+        registrar.optional().playToClient(
+                SyncClientData.TYPE,
+                SyncClientData.STREAM_CODEC,
+                SyncClientPayloadHandler::handleDataOnMain
         );
     }
 }

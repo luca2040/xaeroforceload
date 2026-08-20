@@ -1,9 +1,11 @@
 package com.apollo.xaeroforceload.mixindata;
 
+import com.apollo.xaeroforceload.ClientChunkState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import xaero.map.highlight.ChunkHighlighter;
+import net.minecraft.world.level.ChunkPos;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ForceloadHighlighter extends ChunkHighlighter {
             return null;
         }
 
-        // 0xBBGGRRAA.
+        // 0xBBGGRRAA
         int fill = 0x0000FF33;
         int border = 0x0000FF77;
 
@@ -33,22 +35,17 @@ public class ForceloadHighlighter extends ChunkHighlighter {
 
     @Override
     public int calculateRegionHash(ResourceKey<Level> dimension, int regionX, int regionZ) {
-        if (regionX == 0 && regionZ == 0) {
-            return 1;
-        }
-
-        return 0;
+        return ClientChunkState.getVersion(dimension);
     }
 
     @Override
     public boolean regionHasHighlights(ResourceKey<Level> dimension, int regionX, int regionZ) {
-        return (regionX == 0 && regionZ == 0);
+        return ClientChunkState.getRegions(dimension).contains(ChunkPos.asLong(regionX, regionZ));
     }
 
     @Override
     public boolean chunkIsHighlit(ResourceKey<Level> dimension, int chunkX, int chunkZ) {
-        return (chunkX == 0 && chunkZ == 0)
-                || (chunkX == 1 && chunkZ == 1);
+        return ClientChunkState.get(dimension).contains(ChunkPos.asLong(chunkX, chunkZ));
     }
 
     @Override
@@ -61,7 +58,7 @@ public class ForceloadHighlighter extends ChunkHighlighter {
             return null;
         }
 
-        return Component.literal("Always loaded chunk");
+        return Component.translatable("xaeroforceload.mapmenu.alwaysloaded");
     }
 
     @Override
