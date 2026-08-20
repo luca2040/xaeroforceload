@@ -2,8 +2,11 @@ package com.apollo.xaeroforceload.mixin;
 
 import java.util.ArrayList;
 
+import com.apollo.xaeroforceload.ClientChunkState;
 import com.apollo.xaeroforceload.mixindata.ForceClickOption;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,15 +35,48 @@ public class RightClickMixin {
         ResourceKey<Level> dimension = mapFields.xaeroforceload$getRightClickDim();
         MapTileSelection tiles = mapFields.xaeroforceload$mapTileSelection();
 
-        RightClickOption forceLoadOption =
-                new ForceClickOption(
-                        options.size(), target,
-                        dimension,
-                        tiles.getLeft(), tiles.getTop(),
-                        tiles.getRight(), tiles.getBottom(),
-                        true);
+        long totalChunks = 0;
+        long addedChunks = 0;
+        LongSet loadedChunks = ClientChunkState.get(dimension);
+        for (int i = tiles.getLeft(); i <= tiles.getRight(); i++) {
+            for (int j = tiles.getTop(); j <= tiles.getBottom(); j++) {
+                long longChunk = ChunkPos.asLong(i, j);
+                totalChunks += 1;
+                if (loadedChunks.contains(longChunk)) {
+                    addedChunks++;
+                }
+            }
+        }
 
-        options.add(forceLoadOption);
+        if (addedChunks == totalChunks || addedChunks == 0) {
+            RightClickOption forceLoadOption =
+                    new ForceClickOption(
+                            options.size(), target,
+                            dimension,
+                            tiles.getLeft(), tiles.getTop(),
+                            tiles.getRight(), tiles.getBottom(),
+                            addedChunks == 0);
+
+            options.add(forceLoadOption);
+        } else {
+            RightClickOption forceLoadOptionTrue =
+                    new ForceClickOption(
+                            options.size(), target,
+                            dimension,
+                            tiles.getLeft(), tiles.getTop(),
+                            tiles.getRight(), tiles.getBottom(),
+                            true);
+            RightClickOption forceLoadOptionFalse =
+                    new ForceClickOption(
+                            options.size(), target,
+                            dimension,
+                            tiles.getLeft(), tiles.getTop(),
+                            tiles.getRight(), tiles.getBottom(),
+                            false);
+
+            options.add(forceLoadOptionTrue);
+            options.add(forceLoadOptionFalse);
+        }
 
         return options;
     }
