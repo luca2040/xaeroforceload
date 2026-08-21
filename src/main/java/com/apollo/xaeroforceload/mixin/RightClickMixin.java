@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import xaero.map.gui.GuiMap;
 import xaero.map.gui.IRightClickableElement;
 import xaero.map.gui.MapTileSelection;
 import xaero.map.gui.dropdown.rightclick.GuiRightClickMenu;
@@ -30,6 +31,10 @@ public class RightClickMixin {
             IRightClickableElement target
     ) {
         ArrayList<RightClickOption> options = target.getRightClickOptions();
+        if (!(target instanceof GuiMap))
+            // clicking on waypoints gives a xaero.map.element.HoveredMapElementHolder instead
+            return options;
+
         GuiMapFields mapFields = (GuiMapFields) target;
 
         ResourceKey<Level> dimension = mapFields.xaeroforceload$getRightClickDim();
