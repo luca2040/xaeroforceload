@@ -35,14 +35,14 @@ public class XaeroForceload {
     }
 
     public static void register(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar("1");
+        final PayloadRegistrar registrar = event.registrar("1").optional();
 
         registrar.playToServer(
                 ForceChunkData.TYPE,
                 ForceChunkData.STREAM_CODEC,
                 ForceChunkPayloadHandler::handleDataOnMain
         );
-        registrar.optional().playToClient(
+        registrar.playToClient(
                 SyncClientData.TYPE,
                 SyncClientData.STREAM_CODEC,
                 SyncClientPayloadHandler::handleDataOnMain
@@ -61,13 +61,14 @@ public class XaeroForceload {
             return;
         }
 
-        for (ServerLevel level : server.getAllLevels()) {
-            PacketDistributor.sendToPlayer(
-                    player,
-                    new SyncClientData(
-                            level.dimension(),
-                            level.getForcedChunks()
-                    ));
-        }
+        if (player.connection.hasChannel(SyncClientData.TYPE.id()))
+            for (ServerLevel level : server.getAllLevels()) {
+                PacketDistributor.sendToPlayer(
+                        player,
+                        new SyncClientData(
+                                level.dimension(),
+                                level.getForcedChunks()
+                        ));
+            }
     }
 }

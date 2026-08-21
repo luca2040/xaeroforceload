@@ -21,7 +21,6 @@ public class ForceloadHighlighter extends ChunkHighlighter {
             return null;
         }
 
-        // 0xBBGGRRAA
         int fill = XaeroForceloadConfig.getFillColor();
         int border = XaeroForceloadConfig.getBorderColor();
 

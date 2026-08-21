@@ -5,6 +5,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.commands.ForceLoadCommand;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,11 +23,16 @@ public abstract class ForceloadCommandMixin {
             CallbackInfoReturnable<Integer> cir
     ) {
         ServerLevel level = source.getLevel();
-        PacketDistributor.sendToAllPlayers(
-                new SyncClientData(
-                        level.dimension(),
-                        level.getForcedChunks()
-                ));
+        for (ServerPlayer player : level.players()) {
+            if (player.connection.hasChannel(SyncClientData.TYPE.id())) {
+                PacketDistributor.sendToPlayer(
+                        player,
+                        new SyncClientData(
+                                level.dimension(),
+                                level.getForcedChunks()
+                        ));
+            }
+        }
     }
 
     @Inject(
@@ -41,10 +47,15 @@ public abstract class ForceloadCommandMixin {
             CallbackInfoReturnable<Integer> cir
     ) {
         ServerLevel level = source.getLevel();
-        PacketDistributor.sendToAllPlayers(
-                new SyncClientData(
-                        level.dimension(),
-                        level.getForcedChunks()
-                ));
+        for (ServerPlayer player : level.players()) {
+            if (player.connection.hasChannel(SyncClientData.TYPE.id())) {
+                PacketDistributor.sendToPlayer(
+                        player,
+                        new SyncClientData(
+                                level.dimension(),
+                                level.getForcedChunks()
+                        ));
+            }
+        }
     }
 }

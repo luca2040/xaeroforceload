@@ -4,6 +4,7 @@ import com.apollo.xaeroforceload.XaeroForceload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -36,10 +37,15 @@ public class ForceChunkPayloadHandler {
             }
         }
 
-        PacketDistributor.sendToAllPlayers(
-                new SyncClientData(
-                        level.dimension(),
-                        level.getForcedChunks()
-                ));
+        for (ServerPlayer player : level.players()) {
+            if (player.connection.hasChannel(SyncClientData.TYPE.id())) {
+                PacketDistributor.sendToPlayer(
+                        player,
+                        new SyncClientData(
+                                level.dimension(),
+                                level.getForcedChunks()
+                        ));
+            }
+        }
     }
 }

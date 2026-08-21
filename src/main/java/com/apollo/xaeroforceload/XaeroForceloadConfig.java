@@ -6,16 +6,16 @@ public class XaeroForceloadConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     public static final ModConfigSpec.ConfigValue<String> FORCELOAD_COLOR = BUILDER
-            .translation("test.some.text")
+            .translation("xaeroforceload.config.color")
             .define("forceLoadColor", "#FF0000", value ->
                     value instanceof String s && s.matches("^#[0-9A-Fa-f]{6}$"));
 
     public static final ModConfigSpec.DoubleValue FORCELOAD_OPACITY_MAIN = BUILDER
-            .translation("some.other.translation")
-            .defineInRange("forceLoadOpacity", 0.2D, 0.1D, 1.0D);
+            .translation("xaeroforceload.config.opacity.main")
+            .defineInRange("forceLoadOpacityMain", 0.2D, 0.1D, 1.0D);
     public static final ModConfigSpec.DoubleValue FORCELOAD_OPACITY_BORDER = BUILDER
-            .translation("some.other.translationv2")
-            .defineInRange("forceLoadOpacity2", 0.46D, 0.1D, 1.0D);
+            .translation("xaeroforceload.config.opacity.border")
+            .defineInRange("forceLoadOpacityBorder", 0.46D, 0.1D, 1.0D);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
@@ -30,10 +30,11 @@ public class XaeroForceloadConfig {
     }
 
     private static int toXaeroColor(int[] rgb, int opacity) {
-        return opacity |
-                (rgb[0] << 8) |
+        // 0xBBGGRRAA
+        return (rgb[2] << 24) |
                 (rgb[1] << 16) |
-                (rgb[2] << 24);
+                (rgb[0] << 8) |
+                opacity;
     }
 
     public static int getFillColor() {

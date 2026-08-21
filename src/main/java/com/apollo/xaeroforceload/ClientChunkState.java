@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientChunkState {
@@ -33,7 +34,7 @@ public class ClientChunkState {
             LongSet chunks
     ) {
         LOADED.put(dim, chunks);
-        VERSIONS.merge(dim, 1, Integer::sum);
+        updateVersion(dim);
 
         LongSet regions = new LongOpenHashSet();
         for (long chunk : chunks) {
@@ -47,6 +48,10 @@ public class ClientChunkState {
         REGIONS.put(dim, regions);
     }
 
+    public static Set<ResourceKey<Level>> getDimensions() {
+        return REGIONS.keySet();
+    }
+
     public static LongSet get(ResourceKey<Level> dim) {
         return LOADED.getOrDefault(dim, LongSet.of());
     }
@@ -58,6 +63,10 @@ public class ClientChunkState {
         combined.addAll(REGIONS.getOrDefault(dim, LongSet.of()));
 
         return combined;
+    }
+
+    public static void updateVersion(ResourceKey<Level> dim) {
+        VERSIONS.merge(dim, 1, Integer::sum);
     }
 
     public static int getVersion(ResourceKey<Level> dim) {

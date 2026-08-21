@@ -3,5 +3,14 @@
   "xaeroforceload.mapmenu.unload": "Disable forced loading",
   "xaeroforceload.mapmenu.load.multiple": "Force load chunks",
   "xaeroforceload.mapmenu.unload.multiple": "Disable forced loading",
-  "xaeroforceload.mapmenu.alwaysloaded": "Always loaded chunk"
+
+  "xaeroforceload.mapmenu.alwaysloaded": "Always loaded chunk",
+
+  "xaeroforceload.config.color": "Forceloaded chunk color",
+  "xaeroforceload.config.color.tooltip": "Color in hex format #RRGGBB",
+
+  "xaeroforceload.config.opacity.main": "Chunk color opacity",
+  "xaeroforceload.config.opacity.main.tooltip": "Opacity in the map view",
+  "xaeroforceload.config.opacity.border": "Chunk border opacity",
+  "xaeroforceload.config.opacity.border.tooltip": "Opacity in the map view"
 }
